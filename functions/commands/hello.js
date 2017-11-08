@@ -1,4 +1,5 @@
 const lib = require('lib')({token: process.env.STDLIB_TOKEN});
+const dialog = require('../../utils/dialog_open.js');
 
 /**
 * /hello
@@ -17,10 +18,36 @@ const lib = require('lib')({token: process.env.STDLIB_TOKEN});
 * @returns {object}
 */
 module.exports = (user, channel, text = '', command = {}, botToken = null, callback) => {
+  // check if has goals
+  // if not create goal with dialog
+  // if yes do nothing for now
 
-  callback(null, {
-    response_type: 'in_channel',
-    text: `Hello, <@${user}>...\nYou said: ${text}`
-  });
-
+  //command.trigger_id
+  console.log('starting command');
+  const dialogContent = {
+    "callback_id": "ryde-46e2b0",
+    "title": "Request a Ride",
+    "submit_label": "Request",
+    "elements": [
+      {
+        "type": "text",
+        "label": "Pickup Location",
+        "name": "loc_origin"
+      },
+      {
+        "type": "text",
+        "label": "Dropoff Location",
+        "name": "loc_destination"
+      }
+    ]
+  };
+  console.log(dialogContent);
+  dialog(
+    botToken,
+    {
+      dialog: dialogContent,
+      trigger_id: command.trigger_id
+    },
+    callback
+  );
 };
